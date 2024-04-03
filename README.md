@@ -12,24 +12,33 @@ A REST API for a task management system must be created. Through this system a u
 
 ```mermaid
 erDiagram
-    CUSTOMER ||--o{ TASK : have
-    CUSTOMER {
-        SERAIAL id PK
+    USER ||--o{ TASK : have
+    USER ||--o{ HISTORY_USER_TASK : have
+    USER {
+        VARCHAR(32) id PK
         VARCHAR(50) name
         VARCHAR(50) last_name
         VARCHAR(100) email UK
         VARCHAR(50) password
         TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
     }
+
+    TASK ||--o{ HISTORY_USER_TASK : have
     TASK {
-        SERAIAL id PK
-        INTEGER customer_id FK
+        VARCHAR(32) id PK
+        VARCHAR(32) user_id FK
         VARCHAR(50) title
         VARCHAR(250) description
         TIMESTAMP due_date
         TEXT comment
         TEXT[] tags
         VARCHAR(250) file
+    }
+    HISTORY_USER_TASK {
+        VARCHAR(32) history_user_task_id PK
+        VARCHAR(32) user_id FK
+        VARCHAR(32) task_id FK
+        TIMESTAMP timestamp
     }
 ```
 
