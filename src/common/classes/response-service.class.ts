@@ -1,4 +1,5 @@
 import { ServiceResponse } from '@common/interfaces';
+import { PageMetaDTO } from '@common/dto';
 
 export class ResponseService {
   private serviceResponse: Record<string, any>;
@@ -18,6 +19,7 @@ export class ResponseService {
     success: boolean,
     messageResponse: string,
     data?: any,
+    meta?: PageMetaDTO,
   ): ServiceResponse {
     const index = Object.values(this.serviceResponse).indexOf(messageResponse);
     const code = Object.keys(this.serviceResponse)[index];
@@ -28,12 +30,14 @@ export class ResponseService {
           statusCode: 'UNDEFINED_RESPONSE',
           message: messageResponse,
           data,
+          meta,
         }
       : {
           success,
           statusCode: code,
           message: messageResponse,
           data,
+          meta,
         };
   }
 }
