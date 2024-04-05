@@ -1,6 +1,7 @@
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ClassSerializerInterceptor } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { Logger as PinoLogger } from 'nestjs-pino';
-import { NestFactory } from '@nestjs/core';
 
 import { HandlerError } from '@common/classes';
 import {
@@ -27,7 +28,9 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   // Start interceptors
+  const reflector = app.get(Reflector);
   app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(reflector),
     new ResponseInterceptor() as never,
     new InputInterceptor() as never,
     new ErrorInterceptor() as never,

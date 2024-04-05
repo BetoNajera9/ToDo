@@ -1,10 +1,15 @@
-import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { PostgresError } from 'pg-error-enum';
 import { QueryFailedError } from 'typeorm';
 import { Response } from 'express';
+import {
+  UnauthorizedException,
+  ExceptionFilter,
+  ArgumentsHost,
+  Catch,
+} from '@nestjs/common';
 
 import { ServiceResponse } from '@common/interfaces';
-import { PostgresError } from 'pg-error-enum';
 /**
  * Function to get status code from exception
  * @param  {unknown} exception
@@ -44,16 +49,26 @@ export class HandlerError implements ExceptionFilter {
       message,
     };
 
-    if (exception instanceof QueryFailedError) {
-      const codeError = (exception as any).code;
-      const detailError = (exception as any).detail;
+    switch (exception.constructor) {
+      case QueryFailedError:
+        const codeError = (exception as any).code;
+        const detailError = (exception as any).detail;
 
-      if (codeError === PostgresError.UNIQUE_VIOLATION) {
-        code = HttpStatus.BAD_REQUEST;
+        if (codeError === PostgresError.UNIQUE_VIOLATION) {
+          code = HttpStatus.BAD_REQUEST;
 
-        resData.statusCode = codeError;
-        resData.message = detailError;
-      }
+          resData.statusCode = codeError;
+          resData.message = detailError;
+        }
+
+        break;
+
+      case UnauthorizedException:
+        code = HttpStatus.UNAUTHORIZED;
+
+        resData.message = (exception as any).response.message;
+        resData.statusCode = (exception as any).response.error;
+        break;
     }
 
     response.status(code).json(resData);
