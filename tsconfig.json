@@ -23,6 +23,7 @@
       "@auth/*": ["src/auth/*"],
       "@user/*": ["src/user/*"],
       "@task/*": ["src/task/*"],
+      "@s3/*": ["src/s3/*"],
       "@server/*": ["src/*"]
     }
   }
