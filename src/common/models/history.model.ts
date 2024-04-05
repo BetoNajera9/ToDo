@@ -6,7 +6,7 @@ import {
   Column,
 } from 'typeorm';
 
-import { TaskActionEnum } from '@common/enum';
+import { TaskActionEnum } from '@task/enums';
 
 import { TaskModel } from './task.model';
 import { UserModel } from './user.model';

@@ -6,4 +6,6 @@ export enum TaskResponse {
 
   NOT_FOUND = "The task hasn't been found successfully.",
   SIZE_FILE = 'File size is greater than 5MB.',
+  WRONG_EXT = 'The file extension is not supported.',
+  UPLOAD_ERROR = 'There was a problem uploading the file.',
 }

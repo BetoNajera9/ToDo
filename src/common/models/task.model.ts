@@ -8,7 +8,7 @@ import {
   Column,
 } from 'typeorm';
 
-import { TaskStatusEnum } from '@common/enum';
+import { TaskStatusEnum } from '@task/enums';
 
 import { HistoryModel } from './history.model';
 import { UserModel } from './user.model';

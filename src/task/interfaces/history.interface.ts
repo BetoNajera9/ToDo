@@ -1,4 +1,4 @@
-import { TaskActionEnum } from '@common/enum';
+import { TaskActionEnum } from '@task/enums';
 
 export interface History {
   /**

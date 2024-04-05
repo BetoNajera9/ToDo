@@ -8,7 +8,7 @@ import {
   IsEnum,
 } from 'class-validator';
 
-import { TaskStatusEnum } from '@common/enum';
+import { TaskStatusEnum } from '@task/enums';
 
 export class EditTaskDTO {
   /**

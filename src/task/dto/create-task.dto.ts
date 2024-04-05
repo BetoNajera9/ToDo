@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TaskStatusEnum } from '@common/enum';
 import {
   ArrayMinSize,
   IsNotEmpty,
@@ -8,6 +7,8 @@ import {
   IsArray,
   IsEnum,
 } from 'class-validator';
+
+import { TaskStatusEnum } from '@task/enums';
 
 export class CreateTaskDTO {
   /**
