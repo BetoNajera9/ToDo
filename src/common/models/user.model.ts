@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
@@ -43,6 +44,7 @@ export class UserModel {
    * The password of the user
    * @example 1q2w3e4r
    */
+  @Exclude()
   @Column()
   password: string;
 
