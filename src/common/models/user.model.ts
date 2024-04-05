@@ -34,7 +34,7 @@ export class UserModel {
 
   /**
    * The email of the user
-   * @example 1q2w3e4r
+   * @example example@email.com
    */
   @Column({ unique: true })
   email: string;

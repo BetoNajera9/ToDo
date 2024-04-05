@@ -1,3 +1,5 @@
+import { ServiceResponse } from '@common/interfaces';
+
 export class ResponseService {
   private serviceResponse: Record<string, any>;
 
@@ -12,20 +14,24 @@ export class ResponseService {
    * @param {any}data All the data to return
    * @returns An object of type StatusResponse
    */
-  handlerResponse(success: boolean, messageResponse: string, data?: any) {
+  handlerResponse(
+    success: boolean,
+    messageResponse: string,
+    data?: any,
+  ): ServiceResponse {
     const index = Object.values(this.serviceResponse).indexOf(messageResponse);
     const code = Object.keys(this.serviceResponse)[index];
 
     return !code
       ? {
           success,
-          code: 'UNDEFINED_RESPONSE',
+          statusCode: 'UNDEFINED_RESPONSE',
           message: messageResponse,
           data,
         }
       : {
           success,
-          code,
+          statusCode: code,
           message: messageResponse,
           data,
         };
