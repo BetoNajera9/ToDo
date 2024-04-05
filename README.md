@@ -15,40 +15,76 @@ erDiagram
     USER ||--o{ TASK : have
     USER ||--o{ HISTORY_USER_TASK : have
     USER {
-        VARCHAR(32) id PK
-        VARCHAR(50) name
-        VARCHAR(50) last_name
-        VARCHAR(100) email UK
-        VARCHAR(50) password
+        UUID id PK "DEFAULT UUID_GENERATE_V4"
+        VARCHAR name "NOT NULL"
+        VARCHAR last_name "NOT NULL"
+        VARCHAR email UK "NOT NULL"
+        VARCHAR password "NOT NULL"
         TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
     TASK ||--o{ HISTORY_USER_TASK : have
     TASK {
-        VARCHAR(32) id PK
-        VARCHAR(32) user_id FK
-        VARCHAR(50) title
-        VARCHAR(250) description
-        TIMESTAMP due_date
-        TEXT comment
-        TEXT[] tags
-        VARCHAR(250) file
+        UUID id PK "DEFAULT UUID_GENERATE_V4"
+        VARCHAR user_id FK "NOT NULL"
+        VARCHAR title "NOT NULL"
+        VARCHAR description "NOT NULL"
+        VARCHAR comment
+        TEXT tags
+        VARCHAR file
+        TaskStatusEnum status "NOT NULL"
+        TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
+        TIMESTAMP updated_at "DEFAULT CURRENT_TIMESTAMP"
     }
+
     HISTORY_USER_TASK {
-        VARCHAR(32) history_user_task_id PK
-        VARCHAR(32) user_id FK
-        VARCHAR(32) task_id FK
-        TIMESTAMP timestamp
+        VARCHAR id PK "DEFAULT UUID_GENERATE_V4"
+        VARCHAR user_id FK "NOT NULL"
+        VARCHAR task_id FK "NOT NULL"
+        TaskActionEnum action
+        TIMESTAMP updated_at "DEFAULT CURRENT_TIMESTAMP"
     }
 ```
 
 ### Prerequisites 📋
+It is necessary to mention that the service needs [environment](.env.example) variables which are very necessary for the operation of the service.
+
+For the database, we chose to use a local database by means of [docker compose](docker-compose.yml)
+
+To lift the containers simply use the following command in the root folder
+
+```shell
+docker compose up -d
+```
 
 ### Installation 🔧
+To install the dependencies of the service simply use the following command
+```shell
+npm install
+```
 
 ### Running 🆙
+Depending on the environment, it is recommended to initialize the project.
 
-## Despliegue 📦
+- Dev
+    ```shell
+    npm run start:dev
+    ```
+- Prod
+    ```shell
+    npm run start:prod
+    ```
+## Documentation 📄
+- Swagger
+  In code it was decided to document with swagger, the path of the documentation is as follows
+  ```route
+  http://localhost:3000/docs
+  ```
+
+
+- Postman
+  Since the endpoints can send files and various complex parameters, it was also decided to make a documentation in Postman, in order to make the requests more easily.
+  [Here](https://www.postman.com/BetoNajera9/workspace/todo) is the link to the collection
 
 ## Built with 🛠️
 
