@@ -7,11 +7,11 @@ import {
   UseGuards,
   Delete,
   Param,
+  Query,
   Body,
   Post,
   Get,
   Put,
-  Query,
 } from '@nestjs/common';
 
 import { PageOptionsDTO, ParamsDTO } from '@common/dto';
@@ -136,9 +136,9 @@ export class TaskController {
   public async createTask(
     @Body() body: CreateTaskDTO,
     @Param() { userId }: ParamsDTO,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file?: Express.Multer.File,
   ): Promise<ServiceResponse> {
-    const responseData = await this.taskService.create(userId, body);
+    const responseData = await this.taskService.create(userId, body, file);
 
     return this.responseService.handlerResponse(
       true,
@@ -157,11 +157,13 @@ export class TaskController {
     type: ServiceResponse,
     status: 200,
   })
+  @UseInterceptors(FileInterceptor('file'))
   public async updateUser(
     @Param() { id: taskId }: ParamsIdDTO,
     @Body() body: EditTaskDTO,
+    @UploadedFile() file?: Express.Multer.File,
   ): Promise<ServiceResponse> {
-    const responseData = await this.taskService.edit(taskId, body);
+    const responseData = await this.taskService.edit(taskId, body, file);
 
     return this.responseService.handlerResponse(
       true,

@@ -68,6 +68,7 @@ export class UserController {
     type: ServiceResponse,
     status: 200,
   })
+  @PublicAccess()
   public async findUser(
     @Param() { id: userId }: ParamsIdDTO,
   ): Promise<ServiceResponse> {

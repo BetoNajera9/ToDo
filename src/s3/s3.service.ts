@@ -33,7 +33,10 @@ export class S3Service {
    * @param  {TaskModel} taskData
    * @returns Promise
    */
-  public async uploadFile(file: Express.Multer.File, taskData: TaskModel): Promise<string> {
+  public async uploadFile(
+    file: Express.Multer.File,
+    taskData: TaskModel,
+  ): Promise<string> {
     const { originalname, buffer, mimetype } = file;
     const ext = originalname.split('.').pop();
     const key = `${taskData.user}/${taskData.id}.${ext}`;

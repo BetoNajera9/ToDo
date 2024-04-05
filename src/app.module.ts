@@ -18,4 +18,4 @@ import Config from './app.config';
     S3Module,
   ],
 })
-export class AppModule { }
+export class AppModule {}
