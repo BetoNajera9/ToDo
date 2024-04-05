@@ -1,5 +1,6 @@
 import {
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
   CreateDateColumn,
   OneToMany,
   ManyToOne,
@@ -7,7 +8,7 @@ import {
   Column,
 } from 'typeorm';
 
-import { TaskStatusEnum } from '@common/enum';
+import { TaskStatusEnum } from '@task/enums';
 
 import { HistoryModel } from './history.model';
 import { UserModel } from './user.model';
@@ -47,7 +48,7 @@ export class TaskModel {
    * @example IN_PROGRES
    */
   @Column({ type: 'enum', enum: TaskStatusEnum })
-  stauts: TaskStatusEnum;
+  status: TaskStatusEnum;
 
   /**
    * The comment of the task
@@ -86,4 +87,14 @@ export class TaskModel {
     name: 'created_at',
   })
   createdAt: Date;
+
+  /**
+   * This is the timestamp at which the task was updated.
+   * @example 2024-04-03 17:20:38.275074
+   */
+  @UpdateDateColumn({
+    type: 'timestamp',
+    name: 'updated_at',
+  })
+  updatedAt: Date;
 }

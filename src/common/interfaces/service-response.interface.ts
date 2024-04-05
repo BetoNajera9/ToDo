@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+import { PageMetaDTO } from '@common/dto';
+
 export class ServiceResponse {
   /**
    * A boolean if the request succeeded
@@ -28,4 +30,11 @@ export class ServiceResponse {
    */
   @ApiProperty({ description: 'The response data' })
   data?: any;
+
+  /**
+   * The meta data about de data
+   * @example PageMetaDTO
+   */
+  @ApiProperty({ description: 'The meta data about de data' })
+  meta?: PageMetaDTO;
 }

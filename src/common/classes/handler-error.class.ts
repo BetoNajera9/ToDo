@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
 import { PostgresError } from 'pg-error-enum';
 import { QueryFailedError } from 'typeorm';
 import { Response } from 'express';
@@ -69,6 +69,12 @@ export class HandlerError implements ExceptionFilter {
         resData.message = (exception as any).response.message;
         resData.statusCode = (exception as any).response.error;
         break;
+
+      case BadRequestException:
+        code = HttpStatus.BAD_REQUEST;
+
+        resData.message = (exception as any).response.message;
+        resData.statusCode = (exception as any).response.error;
     }
 
     response.status(code).json(resData);

@@ -1,6 +1,5 @@
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { Observable } from 'rxjs';
 import {
   UnauthorizedException,
   ExecutionContext,
@@ -43,6 +42,8 @@ export class AuthGuard implements CanActivate {
 
     const user = await this.userService.findById(manageToken.sub);
     if (!user) throw new UnauthorizedException(AuthResponse.INVALID_TOKEN);
+
+    req.params.userId = manageToken.sub;
 
     return true;
   }

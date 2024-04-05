@@ -1,14 +1,10 @@
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ClassSerializerInterceptor } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { Logger as PinoLogger } from 'nestjs-pino';
 
 import { HandlerError } from '@common/classes';
-import {
-  ErrorInterceptor,
-  InputInterceptor,
-  ResponseInterceptor,
-} from '@common/interceptors';
+import { ErrorInterceptor, ResponseInterceptor } from '@common/interceptors';
 
 import { AppModule } from './app.module';
 
@@ -27,12 +23,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
   // Start interceptors
   const reflector = app.get(Reflector);
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(reflector),
     new ResponseInterceptor() as never,
-    new InputInterceptor() as never,
     new ErrorInterceptor() as never,
   );
 
