@@ -4,11 +4,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { Logger as PinoLogger } from 'nestjs-pino';
 
 import { HandlerError } from '@common/classes';
-import {
-  ErrorInterceptor,
-  InputInterceptor,
-  ResponseInterceptor,
-} from '@common/interceptors';
+import { ErrorInterceptor, ResponseInterceptor } from '@common/interceptors';
 
 import { AppModule } from './app.module';
 
@@ -34,7 +30,6 @@ async function bootstrap() {
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(reflector),
     new ResponseInterceptor() as never,
-    new InputInterceptor() as never,
     new ErrorInterceptor() as never,
   );
 
