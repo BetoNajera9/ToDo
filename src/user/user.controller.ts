@@ -1,8 +1,9 @@
-import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ServiceResponse } from '@common/interfaces';
 import { ResponseService } from '@common/classes';
 import {
   Controller,
+  UseGuards,
   Delete,
   Param,
   Patch,
@@ -11,12 +12,17 @@ import {
   Get,
 } from '@nestjs/common';
 
-import { CreateUserDTO, UserDTO } from './dto';
+import { PublicAccess } from '@auth/decorators';
+import { AuthGuard } from '@auth/guards';
+import { ParamsDTO } from '@common/dto';
+
+import { CreateUserDTO, ParamsIdDTO, UserDTO } from './dto';
 import { UserService } from './user.service';
 import { UserResponse } from './enums';
 
 @ApiTags('Users')
 @Controller('user')
+@UseGuards(AuthGuard)
 export class UserController {
   private responseService: ResponseService;
 
@@ -34,6 +40,7 @@ export class UserController {
     type: ServiceResponse,
     status: 200,
   })
+  @PublicAccess()
   public async findAllUser(): Promise<ServiceResponse> {
     const responseData = await this.usersService.findAll();
 
@@ -56,14 +63,13 @@ export class UserController {
       'This endpoint obtains the user with id from the identifier of the parameter.',
     summary: 'Get a user by id',
   })
-  @ApiParam({ name: 'id', description: 'The user identifier of type UUID' })
   @ApiResponse({
     description: 'Success response',
     type: ServiceResponse,
     status: 200,
   })
   public async findUser(
-    @Param() { id: userId }: { id: string },
+    @Param() { id: userId }: ParamsIdDTO,
   ): Promise<ServiceResponse> {
     const responseData = await this.usersService.findById(userId);
 
@@ -90,6 +96,7 @@ export class UserController {
     type: ServiceResponse,
     status: 201,
   })
+  @PublicAccess()
   public async registerUser(
     @Body() body: CreateUserDTO,
   ): Promise<ServiceResponse> {
@@ -102,10 +109,10 @@ export class UserController {
     );
   }
 
-  @Patch(':id')
+  @Patch()
   @ApiOperation({
     description:
-      'This endpoint updates user data, which can be first name, last name and/or email address.',
+      'This endpoint updates my user data, which can be first name, last name and/or email address.',
     summary: 'Update user',
   })
   @ApiResponse({
@@ -113,8 +120,8 @@ export class UserController {
     type: ServiceResponse,
     status: 200,
   })
-  public async updateUser(
-    @Param() userId: string,
+  public async updateMyUser(
+    @Param() { userId }: ParamsDTO,
     @Body() body: UserDTO,
   ): Promise<ServiceResponse> {
     const responseData = await this.usersService.edit(userId, body);
@@ -126,18 +133,20 @@ export class UserController {
     );
   }
 
-  @Delete(':id')
+  @Delete()
   @ApiOperation({
     description:
-      'This endpoint removes the user with the identifier of the parameter.',
-    summary: 'Delete user',
+      'This endpoint removes the user with the payload identifier from the access token.',
+    summary: 'Delete my user',
   })
   @ApiResponse({
     description: 'Success response',
     type: ServiceResponse,
     status: 200,
   })
-  public async deleteUser(@Param() userId: string): Promise<ServiceResponse> {
+  public async deleteMyUser(
+    @Param() { userId }: ParamsDTO,
+  ): Promise<ServiceResponse> {
     const responseData = await this.usersService.delete(userId);
 
     return this.responseService.handlerResponse(

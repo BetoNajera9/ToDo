@@ -2,8 +2,8 @@ import { ConfigModule, registerAs } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 
+import { HistoryModel, TaskModel, UserModel } from '@common/models';
 import { isProduction } from '@server/app.config';
-import { UserModel } from '@common/models';
 
 // Normalize variables of this module
 export const config = registerAs('user', () => ({
@@ -21,5 +21,5 @@ export default {
     }),
   }),
 
-  TypeORMModule: TypeOrmModule.forFeature([UserModel]),
+  TypeORMModule: TypeOrmModule.forFeature([UserModel, TaskModel, HistoryModel]),
 };
